@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+
+<div>
+    <h2>Get counter</h2>
+    <input type="text" id="gridPrefix" size="3" />
+    <input type="text" id="countername" size="20" />
+    <input type="button" value="Get Counter" onclick="getByPrefixAjax();" />
+    <p id="counter" />
+</div>
+
+<div>
+    <h2>Verify counter</h2>
+    <input type="text" id="gridPrefixPost" size="3" />
+    <input type="text" id="counterValue" size="10" />
+    <input type="button" value="Get Counter" onclick="verifyCounter();" />
+    <p id="verifycounter" />
+</div>
+
+<div>
+    <h2>Free counter</h2>
+    <input type="text" id="gridPrefixFree" size="3" />
+    <input type="text" id="counterValueFree" size="10" />
+    <input type="button" value="Get Counter" onclick="freeCounter();" />
+    <p id="freecounter" />
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+    var uri = '';
+    
+    function formatItem(item) {
+      return item.Id + ': $' + item.Price;
+    }
+
+
+    function getByPrefixAjax() {
+        uri = 'api/counter';
+        var prefix = $('#gridPrefix').val();
+        var countername = $('#countername').val();
+
+        $.ajax({
+            url: uri + '?gridprefix=' + prefix + '&countername=' + countername,
+            //url: uri + '/' + prefix + '/' + offernumber + '/' + numberofoffer + '/' + customerid,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("elsmartCounterApiKey", "12345");
+            },
+            method: 'GET',
+            dataType: 'json',
+            data: '',
+            success: function(data) {
+                $('#counter').text(data);
+            },
+            error: function(jqXHR, textStatus, err) {
+                $('#counter').text('Error: ' + err);
+            }
+        });
+    }
+
+    function verifyCounter() {
+            uri = 'api/counter/verifycounter';
+            var prefix = $('#gridPrefixPost').val();
+            var countervalue = $('#counterValue').val();
+            var countername = $('#countername').val();
+
+            $.ajax({
+                url: uri + '?gridprefix=' + prefix + '&countername=' + countername + '&completecounter=' + countervalue,
+                //url: uri + '/' + prefix + '/' + offernumber + '/' + numberofoffer + '/' + customerid,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("elsmartCounterApiKey", "12345");
+                },
+                method: 'POST',
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    $('#verifycounter').text(data);
+                },
+                error: function (jqXHR, textStatus, err) {
+                    $('#verifycounter').text('Error: ' + err);
+                }
+            });
+        }
+
+    function freeCounter() {
+        uri = 'api/counter/freecounter';
+        var prefix = $('#gridPrefixFree').val();
+        var countervalue = $('#counterValueFree').val();
+        var countername = $('#countername').val();
+
+        $.ajax({
+            url: uri + '?gridprefix=' + prefix + '&countername=' + countername + '&completecounter=' + countervalue,
+            //url: uri + '/' + prefix + '/' + offernumber + '/' + numberofoffer + '/' + customerid,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("elsmartCounterApiKey", "12345");
+            },
+            method: 'POST',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                $('#freecounter').text(data);
+            },
+            error: function (jqXHR, textStatus, err) {
+                $('#freecounter').text('Error: ' + err);
+            }
+        });
+    }
+    </script>
+</body>
+</html>

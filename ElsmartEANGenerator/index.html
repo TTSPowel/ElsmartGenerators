@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+
+    <div>
+        <h2>Get ean code</h2>
+        <input type="text" id="gridPrefix" size="5" />
+        <input type="button" value="Get EAN" onclick="getByPrefixAjax();" />
+        <p id="ean" />
+    </div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+    var uri = 'api/ean';
+    
+    function formatItem(item) {
+      return item.Id + ': $' + item.Price;
+    }
+
+    function find() {
+       
+        $.getJSON(uri)
+          .done(function (data) {
+            $('#ean').text(data.Id);
+          })
+          .fail(function (jqXHR, textStatus, err) {
+            $('#ean').text('Error: ' + 'Fant ikke ean kode');
+          });
+    }
+    function getByPrefix() {
+        var id = $('#gridPrefix').val();
+        $.getJSON(uri + '/' + id)
+            
+            .done(function (data) {
+                $('#ean').text(data.Id);
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#ean').text('Error: ' + err);
+            });
+    }
+
+    function getByPrefixAjax() {
+        var id = $('#gridPrefix').val();
+
+        $.ajax({
+            url: uri + '/' + id,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("elsmarteanApiKey", "12345");
+            },
+            method: 'GET',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                $('#ean').text(data.Id);
+            },
+            error: function (jqXHR, textStatus, err) {
+                $('#ean').text('Error: ' + err);
+            }
+        });
+    }
+    </script>
+</body>
+</html>

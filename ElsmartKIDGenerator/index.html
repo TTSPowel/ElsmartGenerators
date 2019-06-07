@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+
+    <div>
+        <h2>Get kid number</h2>
+        <input type="text" id="gridPrefix" size="3"/>
+        <input type="text" id="offerNumber" size="8"/>
+        <input type="text" id="numberOfOffer" size="2"/>
+        <input type="text" id="customerId" size="5" />
+        <input type="button" value="Get KID" onclick="getByPrefixAjax();" />
+        <p id="kid" />
+    </div>
+    fgaf
+<div>
+    <h2>Get kid number mod 11</h2>
+    <input type="text" id="gridPrefix11" size="3"/>
+    <input type="text" id="offerNumber11" size="8"/>
+    <input type="text" id="numberOfOffer11" size="2"/>
+    <input type="text" id="customerId11" size="5" />
+    <input type="button" value="Get KID" onclick="getMod11Kid();" />
+    <p id="kid11" />
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+    var uri = 'api/kid';
+
+        function getMod11Kid() {
+            var prefix = $('#gridPrefix11').val();
+            var offernumber = $('#offerNumber11').val();
+            var numberofoffer = $('#numberOfOffer11').val();
+            var customerid = $('#customerId11').val();
+
+        $.ajax({
+            url: uri + '?prefix=' + prefix + '&offernumber=' + offernumber + '&numberofoffer=' + numberofoffer + '&customerid=' + customerid + '&modulus=11',
+            //url: uri + '/' + prefix + '/' + offernumber + '/' + numberofoffer + '/' + customerid,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("elsmartkidApiKey", "12345");
+            },
+            method: 'GET',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                $('#kid11').text(data);
+            },
+            error: function (jqXHR, textStatus, err) {
+                $('#kid11').text('Error: ' + err);
+            }
+        });
+    }
+
+    function formatItem(item) {
+      return item.Id + ': $' + item.Price;
+    }
+
+    
+    function getByPrefixAjax() {
+        var prefix = $('#gridPrefix').val();
+        var offernumber = $('#offerNumber').val();
+        var numberofoffer = $('#numberOfOffer').val();
+        var customerid = $('#customerId').val();
+
+        $.ajax({
+            url: uri + '?prefix=' + prefix + '&offernumber=' + offernumber + '&numberofoffer=' + numberofoffer + '&customerid=' + customerid,
+            //url: uri + '/' + prefix + '/' + offernumber + '/' + numberofoffer + '/' + customerid,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("elsmartkidApiKey", "12345");
+            },
+            method: 'GET',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                $('#kid').text(data);
+            },
+            error: function (jqXHR, textStatus, err) {
+                $('#kid').text('Error: ' + err);
+            }
+        });
+        }
+
+        
+    </script>
+</body>
+</html>
