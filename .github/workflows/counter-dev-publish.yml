@@ -26,7 +26,7 @@ jobs:
  
     - name: Build and Publish Web App
       working-directory: ElsmartCounterGenerator
-      run: msbuild ElsmartCounterGenerator.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      run: msbuild ElsmartCounterGenerator.csproj /p:Configuration=Release /p:DeployOnBuild=false
  
     - name: Upload Artifact
       uses: actions/upload-artifact@v1.0.0
